@@ -65,9 +65,11 @@ const addUser = (user) => {
 };
 
 app.post ("/users", (req, res) => {
-  const userToAdd = req.body;
+  const userToAdd = (req.body);
+  userToAdd.id = Math.random();
+  console.log(userToAdd);
   addUser(userToAdd);
-  res.send();
+  res.status(201).send();
 });
 
 const deleteUserByID = (id) => {
