@@ -66,10 +66,10 @@ const addUser = (user) => {
 
 app.post ("/users", (req, res) => {
   const userToAdd = (req.body);
-  userToAdd.id = Math.random();
-  console.log(userToAdd);
+  userToAdd.id = String(Math.random());
+  console.log("User to be added: ", userToAdd);
   addUser(userToAdd);
-  res.status(201).send();
+  res.status(201).send(userToAdd);
 });
 
 const deleteUserByID = (id) => {
@@ -78,8 +78,14 @@ const deleteUserByID = (id) => {
 };
 app.delete ("/users/:id", (req, res) => {
   const userToDelete = req.params["id"];
-  deleteUserByID(userToDelete);
-  res.send();
+  const userInList = users["users_list"].filter(user => user["id"] === userToDelete);
+  if (userInList.length > 0) {
+    deleteUserByID(userToDelete);
+    res.status(204).send();
+  } else {
+    res.status(404).send();
+  }
+  
 });
 
 app.get("/", (req, res) => {
